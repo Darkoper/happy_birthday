@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { ChevronDown, Heart } from "lucide-react";
 import Image from "next/image";
+import { useState } from "react";
 import DecorativeRoseImage from "./DecorativeRoseImage";
 
 const seededValue = (seed: number) => {
@@ -50,6 +51,8 @@ const FloatingHearts = () => {
 };
 
 export default function Hero() {
+  const [coupleLoaded, setCoupleLoaded] = useState(false);
+
   const scrollToLetter = () => {
     const element = document.getElementById("love-letter");
     if (element) {
@@ -101,13 +104,19 @@ export default function Hero() {
         animate={{ opacity: 0.9, scale: 1, y: 0 }}
         transition={{ duration: 1.2, delay: 0.4 }}
       >
+        {!coupleLoaded && (
+          <div className="absolute inset-0 rounded-full bg-white/50 blur-2xl animate-pulse" />
+        )}
         <Image
           src="/assets/couple-illustration.png"
           alt="Cute couple illustration"
           width={400}
           height={561}
           priority
-          className="w-24 drop-shadow-[0_22px_32px_rgba(136,19,55,0.16)] sm:w-32 md:w-40 lg:w-48"
+          onLoad={() => setCoupleLoaded(true)}
+          className={`relative z-10 w-24 drop-shadow-[0_22px_32px_rgba(136,19,55,0.16)] transition-all duration-700 ease-out sm:w-32 md:w-40 lg:w-48 ${
+            coupleLoaded ? "scale-100 opacity-100 blur-0" : "scale-105 opacity-0 blur-xl"
+          }`}
         />
       </motion.div>
 

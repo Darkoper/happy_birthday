@@ -1,4 +1,7 @@
+ "use client";
+
 import Image from "next/image";
+import { useState } from "react";
 
 type DecorativeRoseImageProps = {
   variant:
@@ -78,15 +81,24 @@ export default function DecorativeRoseImage({
   priority = false,
 }: DecorativeRoseImageProps) {
   const image = roseImages[variant];
+  const [isLoaded, setIsLoaded] = useState(false);
 
   return (
-    <Image
-      src={image.src}
-      alt={image.alt}
-      width={image.width}
-      height={image.height}
-      priority={priority}
-      className={`pointer-events-none select-none object-contain drop-shadow-[0_18px_26px_rgba(225,29,72,0.14)] ${className}`}
-    />
+    <span className={`relative inline-block overflow-visible ${className}`}>
+      {!isLoaded && (
+        <span className="absolute inset-0 rounded-full bg-rose-100/40 blur-2xl animate-pulse" />
+      )}
+      <Image
+        src={image.src}
+        alt={image.alt}
+        width={image.width}
+        height={image.height}
+        priority={priority}
+        onLoad={() => setIsLoaded(true)}
+        className={`pointer-events-none relative z-10 h-auto w-full select-none object-contain drop-shadow-[0_18px_26px_rgba(225,29,72,0.14)] transition-all duration-700 ease-out ${
+          isLoaded ? "scale-100 opacity-100 blur-0" : "scale-105 opacity-0 blur-xl"
+        }`}
+      />
+    </span>
   );
 }

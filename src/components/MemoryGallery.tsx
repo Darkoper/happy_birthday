@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useState } from "react";
 import FloralAccent from "./FloralAccent";
 
 const memories = [
@@ -11,6 +12,31 @@ const memories = [
   { id: 5, src: "/photos/anu-forever-special.jpg", caption: "Forever special", rotation: -5 },
   { id: 6, src: "/photos/always-my-jaanu.png", caption: "Always my jaanu", rotation: 7 },
 ];
+
+type Memory = (typeof memories)[number];
+
+function MemoryPhoto({ memory, index }: { memory: Memory; index: number }) {
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  return (
+    <div className="overflow-hidden bg-rose-50 aspect-[4/5] relative mb-4">
+      {!isLoaded && (
+        <div className="absolute inset-0 bg-gradient-to-br from-rose-100 via-white to-pink-100 animate-pulse" />
+      )}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={memory.src}
+        alt={memory.caption}
+        loading={index < 2 ? "eager" : "lazy"}
+        onLoad={() => setIsLoaded(true)}
+        className={`w-full h-full object-cover filter sepia-[0.2] contrast-[1.1] transition-all duration-700 ease-out group-hover:scale-110 group-hover:sepia-0 group-hover:contrast-100 ${
+          isLoaded ? "scale-100 opacity-100 blur-0" : "scale-105 opacity-0 blur-xl"
+        }`}
+      />
+      <div className="absolute inset-0 border-[1px] border-white/20 pointer-events-none mix-blend-overlay" />
+    </div>
+  );
+}
 
 export default function MemoryGallery() {
   return (
@@ -51,15 +77,7 @@ export default function MemoryGallery() {
               }}
               className="bg-white p-4 pb-6 shadow-xl rounded-sm border border-gray-100 max-w-[320px] w-full group relative cursor-pointer"
             >
-              <div className="overflow-hidden bg-gray-100 aspect-[4/5] relative mb-4">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={memory.src}
-                  alt={memory.caption}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 filter sepia-[0.2] contrast-[1.1] group-hover:sepia-0 group-hover:contrast-100"
-                />
-                <div className="absolute inset-0 border-[1px] border-white/20 pointer-events-none mix-blend-overlay" />
-              </div>
+              <MemoryPhoto memory={memory} index={index} />
               <p className="font-great-vibes text-2xl text-center text-gray-800 transform -rotate-2 group-hover:rotate-0 transition-transform duration-300">
                 {memory.caption}
               </p>
