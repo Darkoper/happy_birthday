@@ -5,12 +5,12 @@ import { useState } from "react";
 import FloralAccent from "./FloralAccent";
 
 const memories = [
-  { id: 1, src: "/photos/anu-beautiful-smile.jpg", caption: "Her beautiful smile", rotation: -6 },
-  { id: 2, src: "/photos/anu-favorite-person.jpg", caption: "My favorite person", rotation: 4 },
-  { id: 3, src: "/photos/anu-prettiest-soul.jpg", caption: "The prettiest soul", rotation: -3 },
-  { id: 4, src: "/photos/anu-comfort-place.jpg", caption: "My comfort place", rotation: 5 },
-  { id: 5, src: "/photos/anu-forever-special.jpg", caption: "Forever special", rotation: -5 },
-  { id: 6, src: "/photos/always-my-jaanu.png", caption: "Always my jaanu", rotation: 7 },
+  { id: 1, src: "/photos/optimized/anu-new-smile.webp", caption: "Her beautiful smile", rotation: -6 },
+  { id: 2, src: "/photos/optimized/anu-new-favorite.webp", caption: "My favorite person", rotation: 4 },
+  { id: 3, src: "/photos/optimized/anu-prettiest-soul.webp", caption: "The prettiest soul", rotation: -3 },
+  { id: 4, src: "/photos/optimized/anu-comfort-place.webp", caption: "My comfort place", rotation: 5 },
+  { id: 5, src: "/photos/optimized/anu-forever-special.webp", caption: "Forever special", rotation: -5 },
+  { id: 6, src: "/photos/optimized/always-my-jaanu.webp", caption: "Always my jaanu", rotation: 7 },
 ];
 
 type Memory = (typeof memories)[number];
@@ -28,6 +28,7 @@ function MemoryPhoto({ memory, index }: { memory: Memory; index: number }) {
         src={memory.src}
         alt={memory.caption}
         loading={index < 2 ? "eager" : "lazy"}
+        decoding="async"
         onLoad={() => setIsLoaded(true)}
         className={`w-full h-full object-cover filter sepia-[0.2] contrast-[1.1] transition-all duration-700 ease-out group-hover:scale-110 group-hover:sepia-0 group-hover:contrast-100 ${
           isLoaded ? "scale-100 opacity-100 blur-0" : "scale-105 opacity-0 blur-xl"
